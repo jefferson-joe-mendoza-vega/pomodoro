@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -108,7 +109,7 @@
             text-align: left;
         }
 
-        input[type="number"], select {
+        input[type="number"] {
             background: rgba(255, 255, 255, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 10px;
@@ -119,28 +120,13 @@
             text-align: center;
         }
 
-        select {
-            width: auto;
-            min-width: 120px;
-        }
-
-        input[type="range"] {
-            flex: 0.5;
-            min-width: 120px;
-        }
-
-        .volume-value {
-            min-width: 40px;
-            text-align: center;
-        }
-
-        input[type="number"]:focus, select:focus {
+        input[type="number"]:focus {
             outline: none;
             border-color: rgba(255, 255, 255, 0.5);
             background: rgba(255, 255, 255, 0.3);
         }
 
-        input[type="number"]::placeholder, select::placeholder {
+        input[type="number"]::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
 
@@ -198,40 +184,6 @@
             background: linear-gradient(135deg, #5f27cd, #a55eea);
         }
 
-        .sound-test-btn {
-            font-size: 0.9em;
-            padding: 6px 12px;
-            border-radius: 30px;
-            margin-left: 10px;
-        }
-
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: all 0.3s ease;
-            border-bottom: 2px solid transparent;
-        }
-
-        .tab.active {
-            opacity: 1;
-            border-bottom: 2px solid white;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
         @media (max-width: 480px) {
             .container {
                 margin: 20px;
@@ -260,10 +212,6 @@
 
             label {
                 text-align: center;
-            }
-
-            select, input[type="range"] {
-                width: 100%;
             }
         }
     </style>
@@ -302,60 +250,26 @@
         </div>
 
         <div class="settings">
-            <div class="tabs">
-                <div class="tab active" data-tab="timer-settings">⏱️ Temporizador</div>
-                <div class="tab" data-tab="sound-settings">🔊 Sonido</div>
+            <h3 style="margin-bottom: 20px;">⚙️ Configuración</h3>
+            
+            <div class="setting-group">
+                <label for="workTime">Tiempo de trabajo (minutos):</label>
+                <input type="number" id="workTime" min="1" max="60" value="25">
             </div>
             
-            <div class="tab-content active" id="timer-settings">
-                <h3 style="margin-bottom: 20px;">⚙️ Configuración del Temporizador</h3>
-                
-                <div class="setting-group">
-                    <label for="workTime">Tiempo de trabajo (minutos):</label>
-                    <input type="number" id="workTime" min="1" max="60" value="25">
-                </div>
-                
-                <div class="setting-group">
-                    <label for="shortBreak">Descanso corto (minutos):</label>
-                    <input type="number" id="shortBreak" min="1" max="30" value="5">
-                </div>
-                
-                <div class="setting-group">
-                    <label for="longBreak">Descanso largo (minutos):</label>
-                    <input type="number" id="longBreak" min="1" max="60" value="15">
-                </div>
-                
-                <div class="setting-group">
-                    <label for="longBreakInterval">Descanso largo cada:</label>
-                    <input type="number" id="longBreakInterval" min="2" max="10" value="4"> pomodoros
-                </div>
+            <div class="setting-group">
+                <label for="shortBreak">Descanso corto (minutos):</label>
+                <input type="number" id="shortBreak" min="1" max="30" value="5">
             </div>
             
-            <div class="tab-content" id="sound-settings">
-                <h3 style="margin-bottom: 20px;">🔊 Configuración de Sonido</h3>
-                
-                <div class="setting-group">
-                    <label for="alarmSound">Sonido de alarma:</label>
-                    <select id="alarmSound">
-                        <option value="alarm-clock">Reloj despertador</option>
-                        <option value="bell">Campana</option>
-                        <option value="digital">Digital</option>
-                        <option value="electronic">Electrónico</option>
-                        <option value="school-bell">Timbre escolar</option>
-                    </select>
-                    <button class="sound-test-btn" id="testSoundBtn">▶️ Probar</button>
-                </div>
-                
-                <div class="setting-group">
-                    <label for="alarmVolume">Volumen:</label>
-                    <input type="range" id="alarmVolume" min="0" max="100" value="80">
-                    <span class="volume-value" id="volumeValue">80%</span>
-                </div>
-                
-                <div class="setting-group">
-                    <label for="alarmRepeat">Repeticiones:</label>
-                    <input type="number" id="alarmRepeat" min="1" max="10" value="3">
-                </div>
+            <div class="setting-group">
+                <label for="longBreak">Descanso largo (minutos):</label>
+                <input type="number" id="longBreak" min="1" max="60" value="15">
+            </div>
+            
+            <div class="setting-group">
+                <label for="longBreakInterval">Descanso largo cada:</label>
+                <input type="number" id="longBreakInterval" min="2" max="10" value="4"> pomodoros
             </div>
         </div>
     </div>
@@ -373,28 +287,13 @@
                 this.totalWorkTime = 0; // en segundos
                 this.interval = null;
                 this.startTime = null;
-                this.lastTickTime = null;
                 
                 // Configuración por defecto
                 this.settings = {
                     workTime: 25,
                     shortBreak: 5,
                     longBreak: 15,
-                    longBreakInterval: 4,
-                    
-                    // Configuración de sonido
-                    alarmSound: 'alarm-clock',
-                    alarmVolume: 80,
-                    alarmRepeat: 3
-                };
-                
-                // Precargar sonidos
-                this.sounds = {
-                    'alarm-clock': new Audio('https://soundbible.com/grab.php?id=1787&type=mp3'), // Alarma de reloj
-                    'bell': new Audio('https://soundbible.com/grab.php?id=1531&type=mp3'), // Campana
-                    'digital': new Audio('https://soundbible.com/grab.php?id=2197&type=mp3'), // Alarma digital
-                    'electronic': new Audio('https://soundbible.com/grab.php?id=2061&type=mp3'), // Alarma electrónica
-                    'school-bell': new Audio('https://soundbible.com/grab.php?id=1477&type=mp3') // Timbre escolar
+                    longBreakInterval: 4
                 };
 
                 this.initializeElements();
@@ -403,7 +302,6 @@
                 this.updateDisplay();
                 this.updateStats();
                 this.requestNotificationPermission();
-                this.setupTabs();
                 
                 // Detectar cuando la pestaña se vuelve visible/invisible
                 document.addEventListener('visibilitychange', () => {
@@ -432,41 +330,14 @@
                 this.resetBtn = document.getElementById('resetBtn');
                 this.skipBtn = document.getElementById('skipBtn');
                 
-                // Elementos de configuración del temporizador
                 this.workTimeInput = document.getElementById('workTime');
                 this.shortBreakInput = document.getElementById('shortBreak');
                 this.longBreakInput = document.getElementById('longBreak');
                 this.longBreakIntervalInput = document.getElementById('longBreakInterval');
                 
-                // Elementos de configuración de sonido
-                this.alarmSoundSelect = document.getElementById('alarmSound');
-                this.alarmVolumeInput = document.getElementById('alarmVolume');
-                this.volumeValueDisplay = document.getElementById('volumeValue');
-                this.alarmRepeatInput = document.getElementById('alarmRepeat');
-                this.testSoundBtn = document.getElementById('testSoundBtn');
-                
-                // Elementos de estadísticas
                 this.completedPomodorosDisplay = document.getElementById('completedPomodoros');
                 this.totalTimeDisplay = document.getElementById('totalTime');
                 this.currentStreakDisplay = document.getElementById('currentStreak');
-            }
-
-            setupTabs() {
-                const tabs = document.querySelectorAll('.tab');
-                const tabContents = document.querySelectorAll('.tab-content');
-                
-                tabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        // Remover clase active de todas las pestañas
-                        tabs.forEach(t => t.classList.remove('active'));
-                        tabContents.forEach(c => c.classList.remove('active'));
-                        
-                        // Añadir clase active a la pestaña actual
-                        tab.classList.add('active');
-                        const tabId = tab.getAttribute('data-tab');
-                        document.getElementById(tabId).classList.add('active');
-                    });
-                });
             }
 
             bindEvents() {
@@ -475,94 +346,27 @@
                 this.resetBtn.addEventListener('click', () => this.reset());
                 this.skipBtn.addEventListener('click', () => this.skip());
 
-                // Eventos para actualizar configuración del temporizador
+                // Eventos para actualizar configuración
                 [this.workTimeInput, this.shortBreakInput, this.longBreakInput, this.longBreakIntervalInput]
                     .forEach(input => {
-                        input.addEventListener('change', () => this.updateTimerSettings());
+                        input.addEventListener('change', () => this.updateSettings());
                     });
-                
-                // Eventos para actualizar configuración de sonido
-                this.alarmSoundSelect.addEventListener('change', () => this.updateSoundSettings());
-                this.alarmVolumeInput.addEventListener('input', () => {
-                    this.volumeValueDisplay.textContent = `${this.alarmVolumeInput.value}%`;
-                    this.updateSoundSettings();
-                });
-                this.alarmRepeatInput.addEventListener('change', () => this.updateSoundSettings());
-                
-                // Botón para probar sonido
-                this.testSoundBtn.addEventListener('click', () => this.testAlarmSound());
             }
 
-            updateTimerSettings() {
-                // Guardar configuración anterior
-                const oldSettings = {...this.settings};
-                
-                // Actualizar configuración
+            updateSettings() {
                 this.settings.workTime = parseInt(this.workTimeInput.value) || 25;
                 this.settings.shortBreak = parseInt(this.shortBreakInput.value) || 5;
                 this.settings.longBreak = parseInt(this.longBreakInput.value) || 15;
                 this.settings.longBreakInterval = parseInt(this.longBreakIntervalInput.value) || 4;
                 
                 // Si no está corriendo, actualizar el tiempo mostrado
-                if (!this.isRunning && !this.isPaused) {
+                if (!this.isRunning) {
                     this.timeLeft = this.getCurrentSessionTime() * 60;
                     this.totalTime = this.timeLeft;
                     this.updateDisplay();
-                } else if (this.isRunning) {
-                    // Si está corriendo, guardar tiempo actual y continuar con la nueva configuración
-                    const wasRunning = this.isRunning;
-                    const timeLeftPercentage = this.timeLeft / this.totalTime;
-                    
-                    // Solo ajustar el tiempo si ha cambiado el tiempo de la sesión actual
-                    if ((this.currentSession === 'work' && oldSettings.workTime !== this.settings.workTime) ||
-                        (this.currentSession === 'shortBreak' && oldSettings.shortBreak !== this.settings.shortBreak) ||
-                        (this.currentSession === 'longBreak' && oldSettings.longBreak !== this.settings.longBreak)) {
-                        
-                        // Actualizar tiempo total y tiempo restante manteniendo la misma proporción
-                        this.totalTime = this.getCurrentSessionTime() * 60;
-                        this.timeLeft = Math.round(this.totalTime * timeLeftPercentage);
-                        
-                        // Reiniciar el temporizador con el nuevo tiempo
-                        clearInterval(this.interval);
-                        this.startTime = Date.now() - ((this.totalTime - this.timeLeft) * 1000);
-                        this.lastTickTime = Date.now();
-                        
-                        // Reiniciar el intervalo
-                        if (wasRunning) {
-                            this.interval = setInterval(() => this.tick(), 1000);
-                        }
-                        
-                        this.updateDisplay();
-                    }
                 }
                 
                 this.saveToStorage();
-            }
-
-            updateSoundSettings() {
-                this.settings.alarmSound = this.alarmSoundSelect.value;
-                this.settings.alarmVolume = parseInt(this.alarmVolumeInput.value);
-                this.settings.alarmRepeat = parseInt(this.alarmRepeatInput.value) || 3;
-                
-                // Actualizar volumen de todos los sonidos
-                Object.values(this.sounds).forEach(sound => {
-                    sound.volume = this.settings.alarmVolume / 100;
-                });
-                
-                this.saveToStorage();
-            }
-
-            testAlarmSound() {
-                const sound = this.sounds[this.settings.alarmSound];
-                if (sound) {
-                    // Detener el sonido si ya está reproduciéndose
-                    sound.pause();
-                    sound.currentTime = 0;
-                    
-                    // Configurar volumen y reproducir
-                    sound.volume = this.settings.alarmVolume / 100;
-                    sound.play();
-                }
             }
 
             getCurrentSessionTime() {
@@ -588,9 +392,7 @@
                 this.isRunning = true;
                 this.isPaused = false;
                 this.startTime = Date.now() - ((this.totalTime - this.timeLeft) * 1000);
-                this.lastTickTime = Date.now();
                 
-                clearInterval(this.interval); // Asegurarse de que no haya intervalos duplicados
                 this.interval = setInterval(() => {
                     this.tick();
                 }, 1000);
@@ -626,13 +428,7 @@
             }
 
             tick() {
-                const now = Date.now();
-                // Calcular tiempo transcurrido real, no solo 1 segundo
-                const elapsed = Math.floor((now - this.lastTickTime) / 1000);
-                this.lastTickTime = now;
-                
-                // Actualizar tiempo restante basado en tiempo real
-                this.timeLeft = Math.max(0, this.timeLeft - elapsed);
+                this.timeLeft--;
                 this.updateDisplay();
                 
                 if (this.timeLeft <= 0) {
@@ -650,8 +446,8 @@
                 this.isPaused = false;
                 clearInterval(this.interval);
                 
-                // Reproducir sonido de alarma
-                this.playAlarm();
+                // Reproducir sonido
+                this.playNotificationSound();
                 
                 // Mostrar notificación
                 this.showNotification();
@@ -680,36 +476,6 @@
                 this.updateStats();
                 this.updateBodyClass();
                 this.saveToStorage();
-            }
-
-            playAlarm() {
-                const sound = this.sounds[this.settings.alarmSound];
-                if (sound) {
-                    // Detener el sonido si ya está reproduciéndose
-                    sound.pause();
-                    sound.currentTime = 0;
-                    
-                    // Configurar volumen
-                    sound.volume = this.settings.alarmVolume / 100;
-                    
-                    // Reproducir el sonido varias veces
-                    let playCount = 0;
-                    
-                    const playSound = () => {
-                        sound.play();
-                        playCount++;
-                        
-                        if (playCount < this.settings.alarmRepeat) {
-                            // Programar la próxima reproducción
-                            setTimeout(() => {
-                                sound.currentTime = 0;
-                                playSound();
-                            }, sound.duration * 1000 + 500); // Esperar a que termine + 500ms
-                        }
-                    };
-                    
-                    playSound();
-                }
             }
 
             updateDisplay() {
@@ -758,6 +524,29 @@
             updateBodyClass() {
                 document.body.className = '';
                 document.body.classList.add(`${this.currentSession}-session`);
+            }
+
+            playNotificationSound() {
+                // Crear contexto de audio
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Crear un sonido de campana simple
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
+                
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
             }
 
             requestNotificationPermission() {
@@ -811,30 +600,17 @@
                     
                     if (data.settings) {
                         this.settings = { ...this.settings, ...data.settings };
-                        
-                        // Cargar configuración del temporizador
                         this.workTimeInput.value = this.settings.workTime;
                         this.shortBreakInput.value = this.settings.shortBreak;
                         this.longBreakInput.value = this.settings.longBreak;
                         this.longBreakIntervalInput.value = this.settings.longBreakInterval;
-                        
-                        // Cargar configuración de sonido
-                        this.alarmSoundSelect.value = this.settings.alarmSound;
-                        this.alarmVolumeInput.value = this.settings.alarmVolume;
-                        this.volumeValueDisplay.textContent = `${this.settings.alarmVolume}%`;
-                        this.alarmRepeatInput.value = this.settings.alarmRepeat;
-                        
-                        // Actualizar volumen de todos los sonidos
-                        Object.values(this.sounds).forEach(sound => {
-                            sound.volume = this.settings.alarmVolume / 100;
-                        });
                     }
                     
                     // Si el timer estaba corriendo, calcular el tiempo transcurrido
                     if (data.isRunning && data.startTime && data.lastSaveTime) {
                         const now = Date.now();
-                        const elapsed = Math.floor((now - data.lastSaveTime) / 1000);
-                        this.timeLeft = Math.max(0, data.timeLeft - elapsed);
+                        const elapsed = Math.floor((now - data.startTime) / 1000);
+                        this.timeLeft = Math.max(0, data.totalTime - elapsed);
                         this.totalTime = data.totalTime;
                         
                         if (this.timeLeft > 0) {
@@ -864,8 +640,6 @@
 
             restoreRunningTimer() {
                 if (this.isRunning) {
-                    clearInterval(this.interval); // Prevenir intervalos duplicados
-                    this.lastTickTime = Date.now();
                     this.interval = setInterval(() => {
                         this.tick();
                     }, 1000);
@@ -877,38 +651,14 @@
             }
 
             onTabHidden() {
-                // Detener el intervalo pero mantener el estado
-                if (this.isRunning) {
-                    clearInterval(this.interval);
-                }
                 this.saveToStorage();
             }
 
             onTabVisible() {
+                // Recargar desde storage para sincronizar con otros tabs
                 if (this.isRunning) {
-                    // Calcular el tiempo transcurrido mientras la tab estaba oculta
-                    const now = Date.now();
-                    const saved = localStorage.getItem('pomodoroTimer');
-                    
-                    if (saved) {
-                        const data = JSON.parse(saved);
-                        if (data.lastSaveTime) {
-                            const elapsedSeconds = Math.floor((now - data.lastSaveTime) / 1000);
-                            this.timeLeft = Math.max(0, data.timeLeft - elapsedSeconds);
-                            
-                            if (this.timeLeft <= 0) {
-                                // El tiempo se agotó mientras estaba oculto
-                                this.completeSession();
-                                return;
-                            }
-                        }
-                    }
-                    
-                    // Reiniciar el intervalo con el tiempo actual
-                    this.lastTickTime = now;
-                    clearInterval(this.interval);
-                    this.interval = setInterval(() => this.tick(), 1000);
-                    this.updateDisplay();
+                    this.loadFromStorage();
+                    this.restoreRunningTimer();
                 }
             }
         }
@@ -917,17 +667,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             new PomodoroTimer();
         });
-
-        // Asegurar que Worker Web API esté disponible para trabajar en segundo plano
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(registration => {
-                    console.log('ServiceWorker registrado correctamente');
-                }).catch(error => {
-                    console.log('Registro de ServiceWorker falló:', error);
-                });
-            });
-        }
     </script>
 </body>
 </html>
